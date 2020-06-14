@@ -1,32 +1,35 @@
 'use strict';
 
 /**
- * Write a function (factory). It takes a callback as a first param and all
- * the other params after. It creates a function (device). The callback given
- * to the factory is called each time you call the device. It receives all the
- * params from factory (starting from second one) and all the params from the
- * device.
+ * Implement decorator debounce
  *
- * For Example:
- *
- * const f = (...args) => { console.log(args) };
- * const device = bind(f, 1, 2, 3);
- * device(); // 1, 2, 3
- * device(4, 5, 6); // 1, 2, 3, 4, 5, 6
- *
- * @param {Function} callback
- *
- * @return {Function}
- */
-function bind(callback) {
-  // write code here
-  const firstParams = [ ...arguments ].slice(1);
+ * Чтобы оригинальная функция запускалась только после определённой паузы
+ * в запусках обёртки, пока пользователь печататет - ничего
+ * Если остановился и подождал секунду - вывести последнее значение
+ * Функция onChange должна получать тот же `this` и аргументы, что и обёртка
+ **/
+function debounce(f, delay) {
+  let timer;
 
-  const device = (...otherParams) => {
-    return callback(...firstParams, ...otherParams);
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(function() {
+      f(...args);
+    }, delay);
   };
-
-  return device;
 }
 
-module.exports = bind;
+function onChange(event) {
+  // eslint-disable-next-line no-console
+  console.log(event.target.value);
+  // eslint-disable-next-line no-console
+  // console.log(this.value);
+  // uncomment if you implemented debounce with correct this
+}
+
+const wrapper = debounce(onChange, 1000);
+
+const input1 = document.getElementById('input1');
+
+input1.addEventListener('input', wrapper);
