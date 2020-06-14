@@ -1,5 +1,4 @@
-# Task Bind
+# Simple Debounce input
 
-**Read the guideline before start**
 
-[Guideline](https://github.com/mate-academy/js_task-guideline/blob/master/README.md)
+[Demo Link](https://corobox.github.io/js_task-debounce/src/)
